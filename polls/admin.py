@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import Question, Choice
+from .models import AdvUser
 
-
+admin.site.register(AdvUser)
 class ChoiceInLine(admin.TabularInline):
     model = Choice
     extra = 3

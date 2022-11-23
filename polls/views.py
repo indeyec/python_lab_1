@@ -1,5 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+
+from .forms import UserRegisterForm
 from .models import Question, Choice
 from django.template import loader
 from django.urls import reverse
@@ -7,11 +10,29 @@ from django.views import generic
 
 
 class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
+    template_name = 'polls/shit.html'
     context_object_name = 'latest_question_list'
 
     def get_queryset(self):
         return Question.objects.order_by('-pub_date')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Вы успешно зарегестрировались')
+            return redirect('/login')
+        else:
+            messages.error(request, 'Ошибка регистрации')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'polls/register.html', {"form": form})
+
+
+
+
 
 
 class DetailView(generic.DetailView):
@@ -37,3 +58,6 @@ def vote(request, question_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+
