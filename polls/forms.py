@@ -13,7 +13,7 @@ class UserRegisterForm(UserCreationForm):
     password2 = forms.CharField(label='Подтверждение пароля',
                                 widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    checkbox = forms.CharField(label='Согласие на обработку персональных данных')
+    checkbox = forms.BooleanField(label='Согласие на обработку персональных данных')
 
     class Meta:
         model = AdvUser
