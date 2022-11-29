@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -39,8 +40,11 @@ class LoginView(LoginView):
 
 @login_required
 def profile(request):
-   return render(request, 'polls/profile.html')
+    return render(request, 'polls/profile.html')
 
+
+class LogoutView(LoginRequiredMixin, LogoutView):
+    template_name = 'polls/logout.html'
 
 
 class DetailView(generic.DetailView):
@@ -66,6 +70,3 @@ def vote(request, question_id):
         selected_choice.votes += 1
         selected_choice.save()
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-
-
-

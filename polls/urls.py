@@ -1,5 +1,7 @@
-from django.urls import path
+from .views import LogoutView
 
+from django.urls import path
+from .views import profile
 from . import views
 
 
@@ -11,5 +13,7 @@ urlpatterns = [
     path('<int:question_id>/vote/', views.vote, name='vote'),
     path('register/', views.register, name='register'),
     path('login/', views.LoginView.as_view(), name='login'),
+    path('accounts/profile/', profile, name='profile'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout'),
 
 ]
